@@ -22,16 +22,17 @@ class BaseProvider(object):
     def __init__(self, api_host: str, api_key: str = "", name: str = "", system_prompt: str = ""):
         self.name = name
         self.api_host = "https://" + api_host + "/v1"
-        self.api_key = api_keypip install python-lsp-server
+        self.api_key = api_key
         self.models = None
+        self.openai = openai
         self.context = [{"role": "system", "content": system_prompt}]
         self.refresh_provider_info()
 
     def refresh_provider_info(self):
         try:
             self.get_models()
-            openai.api_base = self.api_host
-            openai.api_key = self.api_key
+            self.openai.api_base = self.api_host
+            self.openai.api_key = self.api_key
         except:
             log(traceback.format_exc(), LogType.ERROR)
             log("Failed to refresh provider info!", LogType.WARN)
@@ -50,7 +51,7 @@ class BaseProvider(object):
             reply = ""
             self.context.append(
                 "role": "user", "content": message})
-            response = openai.ChatCompletion.create(
+            response = self.openai.ChatCompletion.create(
                 model=model_name,
                 messages=self.context,
                 stream=stream
@@ -61,17 +62,17 @@ class BaseProvider(object):
                 except AttributeError:
                     self.context.append({'role': 'assistant', 'content': str(reply)})
             return StdSignal()
-        except openai.error.APIError:
+        except self.openai.error.APIError:
             return StdSignal("很抱歉，出错了！\n您的OpenAI API返回了一个错误！\n" + traceback.format_exc(), Status.ERR)
-        except openai.error.InvalidRequestError:
+        except self.openai.error.InvalidRequestError:
             return StdSignal(
                 "很抱歉，出错了！\n您可能没有选择模型又或者是你的API不支持你选择的模型！\n" + traceback.format_exc(),
                 Status.ERR)
-        except openai.error.APIConnectionError:
+        except self.openai.error.APIConnectionError:
             return StdSignal(
                 "很抱歉，出错了！\n您的OpenAI API可能格式有误或不存在，请检查您的API地址。\n如果API地址确认无误，但您仍然能看到这个错误窗口，那么请询问API提供者！\n" +
                 traceback.format_exc(), Status.ERR)
-        except openai.error.AuthenticationError:
+        except self.openai.error.AuthenticationError:
             return StdSignal(
                 "很抱歉，出错了！\n您的API Key可能有误、无效、不存在，又可能是API提供者跑路了。\n如果API Key确认无误，但您仍然能看到这个错误窗口，那么请询问API提供者！\n" +
                 traceback.format_exc(), Status.ERR)
