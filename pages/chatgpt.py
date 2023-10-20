@@ -236,6 +236,9 @@ def chatgpt(page: ft.Page):
             )
             page.dialog.open = True
             page.update()
+        finally:
+            message_to_send.disabled = False
+            page.update()
 
     def send_message():
         if not message_to_send.value == "":
