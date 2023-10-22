@@ -1,5 +1,7 @@
 import flet as ft
 from flet import ThemeMode
+import os
+
 from router import router_func
 
 
@@ -47,5 +49,9 @@ def main(page: ft.Page):
     page.on_view_pop = view_pop
     page.go(page.route)
 
-ft.app(target=main, port=80, view=ft.AppView.WEB_BROWSER, assets_dir="resource")
+
+if not os.environ.get("PORT") is None or not os.environ.get("PORT") == "":
+    ft.app(target=main, port=int(os.environ.get("PORT")), view=ft.AppView.WEB_BROWSER, assets_dir="resource")
+else:
+    ft.app(target=main, port=7860, view=ft.AppView.WEB_BROWSER, assets_dir="resource")
 # ft.app(target=main, assets_dir="resource")
