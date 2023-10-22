@@ -12,7 +12,7 @@ RUN pip install flet
 RUN pip install openai
 
 # 设置端口
-EXPOSE 80
+EXPOSE ${PORT}
 
 # 运行app.py当容器启动时
 CMD ["python", "main.py"]
