@@ -404,7 +404,7 @@ def chatgpt(page: ft.Page):
                             ft.PopupMenuItem(text="导入",
                                              icon=ft.icons.IMPORT_EXPORT_ROUNDED,
                                              on_click=lambda _: import_chat())
-                        ]
+                        ], tooltip="打开二级菜单"
                     )
                 ]
             ),
