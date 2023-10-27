@@ -21,7 +21,8 @@ def chatgpt(page: ft.Page):
         messages = [{"role": "system", "content": default_sys_prompt}]
     else:
         messages = [
-            {"role": "system", "content": page.client_storage.get("system_prompt")}
+            {"role": "system", "content": page.client_storage.get(
+                "system_prompt")}
         ]
     messages_to_show = ft.ListView(spacing=5, expand=1, auto_scroll=True)
     messages_to_show.controls.append(
@@ -43,7 +44,8 @@ def chatgpt(page: ft.Page):
                     + str(
                         requests.get(
                             "https://api.nova-oss.com/v1/account/credits",
-                            headers={"Authorization": "Bearer " + openai.api_key},
+                            headers={
+                                "Authorization": "Bearer " + openai.api_key},
                         ).json()["credits"]
                     )
                 )
@@ -82,17 +84,12 @@ def chatgpt(page: ft.Page):
                 page.update()
 
         try:
-            if (
-                not page.client_storage.get("openai_api_host") is None
-                or not page.client_storage.get("openai_api_host") == ""
-            ):
-                openai.api_key = page.client_storage.get("openai_api_key")
-                openai.api_base = (
-                    "https://" + page.client_storage.get("openai_api_host") + "/v1"
-                )
-                get_models()
-            else:
-                raise ValueError("openai_api_host is empty")
+            openai.api_key = page.client_storage.get("openai_api_key")
+            openai.api_base = (
+                "https://" +
+                page.client_storage.get("openai_api_host") + "/v1"
+            )
+            get_models()
         except Exception:
             print(traceback.format_exc())
             if (
@@ -100,7 +97,8 @@ def chatgpt(page: ft.Page):
                 and not os.environ.get("OPENAI_API_HOST") is None
             ):
                 openai.api_key = os.environ.get("OPENAI_API_KEY")
-                openai.api_base = "https://" + os.environ.get("OPENAI_API_HOST") + "/v1"
+                openai.api_base = "https://" + \
+                    os.environ.get("OPENAI_API_HOST") + "/v1"
                 get_models()
             else:
                 page.snack_bar = ft.SnackBar(
@@ -126,7 +124,8 @@ def chatgpt(page: ft.Page):
         reply = ""
         try:
             nonlocal messages_to_show
-            messages.append({"role": "user", "content": str(message_to_send.value)})
+            messages.append(
+                {"role": "user", "content": str(message_to_send.value)})
             response = openai.ChatCompletion.create(
                 model=model_will_use.value, messages=messages, stream=True
             )
@@ -142,7 +141,8 @@ def chatgpt(page: ft.Page):
                     ).get_widget()
                     page.update()
                 except AttributeError:
-                    messages.append({"role": "assistant", "content": str(reply)})
+                    messages.append(
+                        {"role": "assistant", "content": str(reply)})
                     message_to_send.value = ""
                     message_to_send.disabled = False
                     page.update()
@@ -159,7 +159,8 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton("我知道了", on_click=lambda _: close_dialog())],
+                actions=[ft.TextButton(
+                    "我知道了", on_click=lambda _: close_dialog())],
                 modal=True,
             )
             page.dialog.open = True
@@ -177,7 +178,8 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton("我知道了", on_click=lambda _: close_dialog())],
+                actions=[ft.TextButton(
+                    "我知道了", on_click=lambda _: close_dialog())],
                 modal=True,
             )
             page.dialog.open = True
@@ -195,7 +197,8 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton("我知道了", on_click=lambda _: close_dialog())],
+                actions=[ft.TextButton(
+                    "我知道了", on_click=lambda _: close_dialog())],
                 modal=True,
             )
             page.dialog.open = True
@@ -213,7 +216,8 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton("我知道了", on_click=lambda _: close_dialog())],
+                actions=[ft.TextButton(
+                    "我知道了", on_click=lambda _: close_dialog())],
                 modal=True,
             )
             page.dialog.open = True
@@ -231,7 +235,8 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton("我知道了", on_click=lambda _: close_dialog())],
+                actions=[ft.TextButton(
+                    "我知道了", on_click=lambda _: close_dialog())],
                 modal=True,
             )
             page.dialog.open = True
@@ -260,7 +265,8 @@ def chatgpt(page: ft.Page):
             messages = [{"role": "system", "content": default_sys_prompt}]
         else:
             messages = [
-                {"role": "system", "content": page.client_storage.get("system_prompt")}
+                {"role": "system", "content": page.client_storage.get(
+                    "system_prompt")}
             ]
         messages_to_show.controls = []
         messages_to_show.controls.append(
@@ -272,7 +278,8 @@ def chatgpt(page: ft.Page):
     def set_system_prompt():
         def on_dialog_ok():
             nonlocal messages
-            page.client_storage.set("system_prompt", system_prompt_will_use.value)
+            page.client_storage.set(
+                "system_prompt", system_prompt_will_use.value)
             page.dialog.open = False
             if (
                 page.client_storage.get("system_prompt") is None
@@ -287,7 +294,8 @@ def chatgpt(page: ft.Page):
                     }
                 ]
             messages_to_show.controls = [
-                MessageView.MessageView("S", "SYSTEM", "# 欢迎使用", page).get_widget()
+                MessageView.MessageView(
+                    "S", "SYSTEM", "# 欢迎使用", page).get_widget()
             ]
             refresh_api_info()
             page.update()
@@ -324,7 +332,8 @@ def chatgpt(page: ft.Page):
             messages = json.loads(page.dialog.content.value)
             messages_to_show.controls.clear()
             messages_to_show.controls.append(
-                MessageView.MessageView("S", "SYSTEM", "# 欢迎使用", page).get_widget()
+                MessageView.MessageView(
+                    "S", "SYSTEM", "# 欢迎使用", page).get_widget()
             )
 
             page.dialog.open = False
@@ -380,15 +389,23 @@ def chatgpt(page: ft.Page):
         "/chatgpt",
         controls=[
             # ft.AppBar(title=ft.Text(value="ChatGPT")),
-            ft.Row([model_will_use]),
             ft.Row(
                 [
-                    ft.TextButton(
-                        "设置预设文本", on_click=lambda _: set_system_prompt(), expand=1
-                    ),
-                    ft.TextButton(
-                        "刷新API信息", on_click=lambda _: refresh_api_info(), expand=1
-                    ),
+                    model_will_use,
+                    ft.PopupMenuButton(
+                        items=[
+                            ft.PopupMenuItem(
+                                text="设置预设文本", on_click=lambda _: set_system_prompt()),
+                            ft.PopupMenuItem(
+                                text="刷新API信息", on_click=lambda _: refresh_api_info()),
+                            ft.PopupMenuItem(text="导出",
+                                             icon=ft.icons.IMPORT_EXPORT,
+                                             on_click=lambda _: export_chat()),
+                            ft.PopupMenuItem(text="导入",
+                                             icon=ft.icons.IMPORT_EXPORT_ROUNDED,
+                                             on_click=lambda _: import_chat())
+                        ]
+                    )
                 ]
             ),
             messages_to_show,
@@ -402,21 +419,7 @@ def chatgpt(page: ft.Page):
                         icon=ft.icons.CLEAR, on_click=lambda _: clear_context()
                     ),
                 ]
-            ),
-            ft.Row(
-                [
-                    ft.TextButton(
-                        text="导出",
-                        icon=ft.icons.IMPORT_EXPORT,
-                        on_click=lambda _: export_chat(),
-                    ),
-                    ft.TextButton(
-                        text="导入",
-                        icon=ft.icons.IMPORT_EXPORT_ROUNDED,
-                        on_click=lambda _: import_chat(),
-                    ),
-                ]
-            ),
+            )
         ],
     )
 
