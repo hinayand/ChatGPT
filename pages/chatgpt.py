@@ -122,6 +122,13 @@ def chatgpt(page: ft.Page):
             page.update()
 
         reply = ""
+
+        # 当发生错误时，对话框的Action
+        actions_list = [
+            ft.TextButton("我知道了", on_click=lambda _: close_dialog()),
+            ft.TextButton("复制错误日志", on_click=lambda _: page.set_clipboard(page.dialog.content.controls[0].value))
+        ]
+
         try:
             nonlocal messages_to_show
             messages.append(
@@ -159,8 +166,7 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton(
-                    "我知道了", on_click=lambda _: close_dialog())],
+                actions=actions_list,
                 modal=True,
             )
             page.dialog.open = True
@@ -178,8 +184,7 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton(
-                    "我知道了", on_click=lambda _: close_dialog())],
+                actions=actions_list,
                 modal=True,
             )
             page.dialog.open = True
@@ -197,8 +202,7 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton(
-                    "我知道了", on_click=lambda _: close_dialog())],
+                actions=actions_list,
                 modal=True,
             )
             page.dialog.open = True
@@ -216,8 +220,7 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton(
-                    "我知道了", on_click=lambda _: close_dialog())],
+                actions=actions_list,
                 modal=True,
             )
             page.dialog.open = True
@@ -235,8 +238,7 @@ def chatgpt(page: ft.Page):
                     ],
                     expand=True,
                 ),
-                actions=[ft.TextButton(
-                    "我知道了", on_click=lambda _: close_dialog())],
+                actions=actions_list,
                 modal=True,
             )
             page.dialog.open = True
@@ -388,7 +390,6 @@ def chatgpt(page: ft.Page):
     view = ft.View(
         "/chatgpt",
         controls=[
-            # ft.AppBar(title=ft.Text(value="ChatGPT")),
             ft.Row(
                 [
                     model_will_use,

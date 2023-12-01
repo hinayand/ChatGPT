@@ -1,5 +1,3 @@
-import os
-
 import flet as ft
 
 from pages import chatgpt, setting
@@ -9,6 +7,8 @@ def index(page: ft.Page):
     page.window_width = 1024
     page.window_height = 768
     page.title = "ChatGPT"
+    if not page.client_storage.get("theme_color") is None or not page.client_storage.get("theme_color") == "":
+        page.theme.color_scheme_seed = page.client_storage.get("theme_color")
 
     views = [setting.setting(page).controls, chatgpt.chatgpt(page).controls]
 
@@ -16,19 +16,10 @@ def index(page: ft.Page):
         views[0], alignment=ft.MainAxisAlignment.START, expand=True
     )
 
-    def _switch_view(e: int):
-        current_view.controls = views[e]
-        page.update()
-
-    def switch_view(e: int):
-        _switch_view(e)
-
     action_list = ft.NavigationRail(
         selected_index=0,
         label_type=ft.NavigationRailLabelType.ALL,
         extended=True,
-        min_width=100,
-        min_extended_width=400,
         group_alignment=-0.9,
         destinations=[
             ft.NavigationRailDestination(
@@ -43,11 +34,41 @@ def index(page: ft.Page):
             ),
         ],
         on_change=lambda e: switch_view(e.control.selected_index),
-        visible=True,
+        visible=True
     )
 
+    def _switch_view(e: int):
+        current_view.controls = views[e]
+        page.update()
+
+    def switch_view(e: int):
+        _switch_view(e)
+
+    def when_resize():
+        if page.width <= 600:
+            action_list.min_extended_width = page.width
+        else:
+            action_list.min_extended_width = 400
+        page.update()
+
+    animated_action_list = ft.AnimatedSwitcher(
+        action_list,
+        transition=ft.AnimatedSwitcherTransition.FADE,
+        switch_in_curve=ft.AnimationCurve.EASE_OUT,
+        switch_out_curve=ft.AnimationCurve.EASE_IN,
+        duration=500,
+        reverse_duration=500 // 2
+    )
+
+    when_resize()
+
+    nothing = ft.VerticalDivider()
+
+    page.on_resize = lambda _: when_resize()
+
     def sidebar():
-        action_list.visible = not action_list.visible
+        # action_list.visible = not action_list.visible
+        animated_action_list.content = nothing if animated_action_list.content == action_list else action_list
         page.update()
 
     # Basic View
@@ -59,7 +80,7 @@ def index(page: ft.Page):
                 leading=ft.IconButton(
                     ft.icons.MENU, on_click=lambda _: sidebar()),
             ),
-            ft.Row([action_list, current_view], expand=True),
+            ft.Row([animated_action_list, current_view], expand=True),
         ],
     )
     return view
