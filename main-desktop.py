@@ -48,4 +48,4 @@ def main(page: ft.Page):
     page.go(page.route)
 
 # ft.app(target=main, port=7860, view=ft.AppView.WEB_BROWSER, assets_dir="resource")
-ft.app(target=main, assets_dir="resource")
+ft.app(target=main, assets_dir="resource", name="ChatGPT")

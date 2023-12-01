@@ -1,6 +1,7 @@
+import os
+
 import flet as ft
 from flet import ThemeMode
-import os
 
 from router import router_func
 
@@ -51,7 +52,8 @@ def main(page: ft.Page):
 
 
 try:
-    ft.app(target=main, port=int(os.environ.get("PORT")), view=ft.AppView.WEB_BROWSER, assets_dir="resource")
+    ft.app(target=main, port=int(os.environ.get("PORT")), view=ft.AppView.WEB_BROWSER, assets_dir="resource",
+           name="ChatGPT")
 except TypeError:
-    ft.app(target=main, port=7860, view=ft.AppView.WEB_BROWSER, assets_dir="resource")
+    ft.app(target=main, port=7860, view=ft.AppView.WEB_BROWSER, assets_dir="resource", name="ChatGPT")
 # ft.app(target=main, assets_dir="resource")
