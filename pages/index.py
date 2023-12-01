@@ -39,6 +39,7 @@ def index(page: ft.Page):
 
     def _switch_view(e: int):
         current_view.controls = views[e]
+        animated_action_list.content = nothing if animated_action_list.content == action_list else action_list
         page.update()
 
     def switch_view(e: int):
