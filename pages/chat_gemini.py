@@ -30,7 +30,6 @@ def chat_gemini(page: ft.Page):
 
     def _send_message():
         try:
-            refresh_api_info()
             model = genai.GenerativeModel(model_name="gemini-pro")
             message_to_show.controls.append(
                 MessageView("U", "USER", message_to_send.value, page).get_widget()
@@ -54,6 +53,7 @@ def chat_gemini(page: ft.Page):
 
     def send_message():
         if not message_to_send.value == "":
+            refresh_api_info()
             message_to_send.disabled = True
             _send_message()
             message_to_send.disabled = False
@@ -72,6 +72,27 @@ def chat_gemini(page: ft.Page):
         message_to_show.controls = [MessageView("S", "SYSTEM", "# 欢迎使用全新的Gemini！", page).get_widget()]
         page.update()
 
+    def set_api_key():
+        def dialog_op(op_code: str):
+            match op_code:
+                case "save":
+                    page.dialog.open = False
+                    page.client_storage.set("google_gemini_key", page.dialog.content.value)
+                case "cancel":
+                    page.dialog.open = False
+            page.update()
+
+        page.dialog = ft.AlertDialog(
+            title=ft.Text("设置API Key"),
+            content=ft.TextField(label="API Key", hint_text="API Key"),
+            actions=[
+                ft.TextButton(text="保存", on_click=lambda _: dialog_op("save")),
+                ft.TextButton(text="取消", on_click=lambda _: dialog_op("cancel"))
+            ],
+            open=True
+        )
+        page.update()
+
 
     view = ft.View("/chat-gemini", [
         ft.AppBar(title=ft.Text("ChatGemini")),
@@ -79,7 +100,8 @@ def chat_gemini(page: ft.Page):
         ft.Row([
             message_to_send,
             ft.IconButton(icon=ft.icons.SEND, tooltip="发送", on_click=lambda _: send_message()),
-            ft.IconButton(icon=ft.icons.CLEAR, tooltip="清除上下文", on_click=lambda _: clear_history())
+            ft.IconButton(icon=ft.icons.CLEAR, tooltip="清除上下文", on_click=lambda _: clear_history()),
+            ft.TextButton(text="设置API Key", on_click=lambda _: set_api_key())
         ])
     ])
 
