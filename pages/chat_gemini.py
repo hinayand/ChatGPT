@@ -95,13 +95,12 @@ def chat_gemini(page: ft.Page):
 
 
     view = ft.View("/chat-gemini", [
-        ft.AppBar(title=ft.Text("ChatGemini")),
+        ft.AppBar(title=ft.Text("ChatGemini"), actions=[ft.TextButton(text="设置API Key", on_click=lambda _: set_api_key())]),
         message_to_show,
         ft.Row([
             message_to_send,
             ft.IconButton(icon=ft.icons.SEND, tooltip="发送", on_click=lambda _: send_message()),
-            ft.IconButton(icon=ft.icons.CLEAR, tooltip="清除上下文", on_click=lambda _: clear_history()),
-            ft.TextButton(text="设置API Key", on_click=lambda _: set_api_key())
+            ft.IconButton(icon=ft.icons.CLEAR, tooltip="清除上下文", on_click=lambda _: clear_history())
         ])
     ])
 
