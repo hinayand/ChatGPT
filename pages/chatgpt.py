@@ -35,32 +35,6 @@ def chatgpt(page: ft.Page):
 
     model_will_use = ft.Dropdown(label="模型选择", options=[], expand=True)
 
-    def provider_nova_get_credits():
-        if openai.api_base == "https://api.nova-oss.com/v1":
-            try:
-                messages_to_show.controls[0].content.content.controls[-1].value = (
-                    "# 欢迎使用！\n"
-                    + "\n您的Nova OSS积分还有"
-                    + str(
-                        requests.get(
-                            "https://api.nova-oss.com/v1/account/credits",
-                            headers={
-                                "Authorization": "Bearer " + openai.api_key},
-                        ).json()["credits"]
-                    )
-                )
-                page.update()
-            except Exception:
-                page.snack_bar = ft.SnackBar(
-                    ft.Text("您的Nova OSS的API Key有误，无法获取积分数据"), show_close_icon=True
-                )
-                page.snack_bar.open = True
-                page.update()
-        else:
-            messages_to_show.controls[0] = MessageView.MessageView(
-                "S", "SYSTEM", "# 欢迎使用", page
-            ).get_widget()
-
     def refresh_api_info():
         def get_models():
             print(openai.api_base)
@@ -77,16 +51,35 @@ def chatgpt(page: ft.Page):
                     )
                 page.update()
             except:
-                page.snack_bar = ft.SnackBar(
-                    ft.Text("很抱歉，我们无法获取你的API模型信息！"), show_close_icon=True
-                )
-                page.snack_bar.open = True
-                page.update()
+                try:
+                    models = requests.get(
+                        openai.api_base + "/models",
+                        headers={"Authorization": "Bearer " + openai.api_key},
+                    ).json()
+                    print(models)
+                    model_will_use.options.clear()
+                    for model in models:
+                        model_will_use.options.append(
+                            ft.dropdown.Option(model["id"], model["id"])
+                        )
+                    page.update()
+                except:
+                    def close_dialog():
+                        page.dialog.open = False
+                        page.update()
+
+                    page.dialog = ft.AlertDialog(
+                        title=ft.Text("我们无法获取你的API模型信息！"),
+                        content=ft.Text(traceback.format_exc()),
+                        actions=[ft.TextButton("好的", on_click=lambda _: close_dialog())]
+                    )
+                    page.dialog.open = True
+                    page.update()
 
         try:
             openai.api_key = page.client_storage.get("openai_api_key")
             openai.api_base = (
-                "https://" +
+                "http://" +
                 page.client_storage.get("openai_api_host") + "/v1"
             )
             get_models()
@@ -97,7 +90,7 @@ def chatgpt(page: ft.Page):
                 and not os.environ.get("OPENAI_API_HOST") is None
             ):
                 openai.api_key = os.environ.get("OPENAI_API_KEY")
-                openai.api_base = "https://" + \
+                openai.api_base = "http://" + \
                     os.environ.get("OPENAI_API_HOST") + "/v1"
                 get_models()
             else:
@@ -109,8 +102,6 @@ def chatgpt(page: ft.Page):
                 )
                 page.snack_bar.open = True
                 page.update()
-
-        provider_nova_get_credits()
 
     refresh_api_info()
 
@@ -274,7 +265,6 @@ def chatgpt(page: ft.Page):
         messages_to_show.controls.append(
             MessageView.MessageView("S", "SYSTEM", "# 欢迎使用", page).get_widget()
         )
-        provider_nova_get_credits()
         page.update()
 
     def set_system_prompt():
