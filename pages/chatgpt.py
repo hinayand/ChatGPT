@@ -36,72 +36,84 @@ def chatgpt(page: ft.Page):
     model_will_use = ft.Dropdown(label="模型选择", options=[], expand=True)
 
     def refresh_api_info():
+        """
+        刷新API信息函数
+        """
+
         def get_models():
-            print(openai.api_base)
+            """
+            获取模型信息函数
+            """
+
+            print(openai.api_base)  # 打印API基础地址
             try:
+                # 发送GET请求获取模型信息
                 models = requests.get(
                     openai.api_base + "/models",
                     headers={"Authorization": "Bearer " + openai.api_key},
                 ).json()
-                print(models)
-                model_will_use.options.clear()
+                print(models)  # 打印模型信息
+                model_will_use.options.clear()  # 清空下拉菜单选项
                 for model in models["data"]:
                     model_will_use.options.append(
                         ft.dropdown.Option(model["id"], model["id"])
-                    )
-                page.update()
+                    )  # 添加模型选项到下拉菜单
+                page.update()  # 更新页面
             except:
                 try:
+                    # 发送GET请求获取模型信息
                     models = requests.get(
                         openai.api_base + "/models",
                         headers={"Authorization": "Bearer " + openai.api_key},
                     ).json()
-                    print(models)
-                    model_will_use.options.clear()
+                    print(models)  # 打印模型信息
+                    model_will_use.options.clear()  # 清空下拉菜单选项
                     for model in models:
                         model_will_use.options.append(
                             ft.dropdown.Option(model["id"], model["id"])
-                        )
-                    page.update()
+                        )  # 添加模型选项到下拉菜单
+                    page.update()  # 更新页面
                 except:
                     def close_dialog():
                         page.dialog.open = False
                         page.update()
 
+                    # 弹出对话框提示无法获取API模型信息
                     page.dialog = ft.AlertDialog(
                         title=ft.Text("我们无法获取你的API模型信息！"),
                         content=ft.Text(traceback.format_exc()),
                         actions=[ft.TextButton("好的", on_click=lambda _: close_dialog())]
                     )
-                    page.dialog.open = True
-                    page.update()
+                    page.dialog.open = True  # 打开对话框
+                    page.update()  # 更新页面
 
         try:
-            openai.api_key = page.client_storage.get("openai_api_key")
+            openai.api_key = page.client_storage.get("openai_api_key")  # 获取存储的API密钥
             openai.api_base = (
                 "http://" +
                 page.client_storage.get("openai_api_host") + "/v1"
-            )
-            get_models()
+            )  # 根据API主机名设置API基础地址
+            get_models()  # 调用获取模型信息函数
         except Exception:
-            print(traceback.format_exc())
+            print(traceback.format_exc())  # 打印异常信息
             if (
                 not os.environ.get("OPENAI_API_KEY") is None
                 and not os.environ.get("OPENAI_API_HOST") is None
             ):
-                openai.api_key = os.environ.get("OPENAI_API_KEY")
+                openai.api_key = os.environ.get("OPENAI_API_KEY")  # 获取环境变量中的API密钥
                 openai.api_base = "http://" + \
-                    os.environ.get("OPENAI_API_HOST") + "/v1"
-                get_models()
+                    os.environ.get("OPENAI_API_HOST") + "/v1"  # 获取环境变量中的API基础地址
+                get_models()  # 调用获取模型信息函数
             else:
                 page.snack_bar = ft.SnackBar(
                     ft.Text(
                         "请在环境变量中设置OPENAI_API_KEY和OPENAI_API_HOST，又或者在设置中设置API和API Key\n当然，也请检查您设置的API地址是否有效、密钥是否有效"
                     ),
                     show_close_icon=True,
-                )
-                page.snack_bar.open = True
-                page.update()
+                )  # 显示提示信息
+                page.snack_bar.open = True  # 打开提示信息
+                page.update()  # 更新页面
+
 
     refresh_api_info()
 
