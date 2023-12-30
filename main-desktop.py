@@ -22,22 +22,22 @@ def main(page: ft.Page):
         # TODO: Add Route Change Function
         page.views.clear()
 
-        # This is old page route_str codes.
+        # This is old current_page route_str codes.
         # match route_str.route_str:
         #     case "/sys":
-        #         page.views.append(sys.sys(page))
+        #         current_page.views.append(sys.sys(current_page))
         #     case "/tools":
-        #         page.views.append(small_tools_picker.small_tools_picker(page))
+        #         current_page.views.append(small_tools_picker.small_tools_picker(current_page))
         #     case "/tools/random_school_id":
-        #         page.views.append(random_school_id.random_school_id(page))
+        #         current_page.views.append(random_school_id.random_school_id(current_page))
         #     case "/tools/timer":
-        #         page.views.append(timer.timer(page))
+        #         current_page.views.append(timer.timer(current_page))
         #     case "/tools/clock":
-        #         page.views.append(clock.clock(page))
+        #         current_page.views.append(clock.clock(current_page))
         #     case "/dbg":
-        #         page.views.append(dbg.dbg(page))
+        #         current_page.views.append(dbg.dbg(current_page))
         #     case "/setting":
-        #         page.views.append(setting.setting(page))
+        #         current_page.views.append(setting.setting(current_page))
 
         router_func(route.route, page)
 

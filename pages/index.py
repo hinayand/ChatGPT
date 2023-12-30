@@ -1,6 +1,6 @@
 import flet as ft
 
-from pages import chatgpt, setting
+from pages import chatgpt, setting, models
 
 
 def index(page: ft.Page):
@@ -10,7 +10,7 @@ def index(page: ft.Page):
     if not page.client_storage.get("theme_color") is None or not page.client_storage.get("theme_color") == "":
         page.theme.color_scheme_seed = page.client_storage.get("theme_color")
 
-    views = [setting.setting(page).controls, chatgpt.chatgpt(page).controls]
+    views = [setting.setting(page).controls, chatgpt.chatgpt(page).controls, models.models(page).controls]
 
     current_view = ft.Column(
         views[0], alignment=ft.MainAxisAlignment.START, expand=True
@@ -32,6 +32,11 @@ def index(page: ft.Page):
                 selected_icon=ft.icons.CHAT,
                 label="ChatGPT",
             ),
+            ft.NavigationRailDestination(
+                icon=ft.icons.CHAT_OUTLINED,
+                selected_icon=ft.icons.MODEL_TRAINING,
+                label="更多模型",
+            )
         ],
         on_change=lambda e: switch_view(e.control.selected_index),
         visible=True
