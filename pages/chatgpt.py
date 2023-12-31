@@ -97,8 +97,8 @@ def chatgpt(page: ft.Page):
         except Exception:
             print(traceback.format_exc())  # 打印异常信息
             if (
-                not os.environ.get("OPENAI_API_KEY") is None
-                and not os.environ.get("OPENAI_API_HOST") is None
+                os.environ.get("OPENAI_API_KEY") is not None
+                and os.environ.get("OPENAI_API_HOST") is not None
             ):
                 openai.api_key = os.environ.get("OPENAI_API_KEY")  # 获取环境变量中的API密钥
                 openai.api_base = "http://" + \
