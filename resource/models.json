@@ -1,7 +1,12 @@
 [
   {
     "model_name": "Gemini Pro",
-    "model_description": "Gemini Pro是Google开发的一个大语言模型，拥有着较强的能力",
+    "model_description": "Gemini Pro是Google开发的一个大语言模型，有32k的上下文空间，目前最快的生成速度和较强的能力",
     "model_page_path": "/chat-gemini"
+  },
+  {
+    "model_name": "ChatGLM Turbo",
+    "model_description": "ChatGLM Turbo是由智谱AI开发的一个大语言模型，有32k的上下文空间，较快的生成速度和较强的能力",
+    "model_page_path": "/chat-glm"
   }
 ]

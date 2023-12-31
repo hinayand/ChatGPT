@@ -11,6 +11,7 @@ ADD . /app
 RUN pip install flet
 RUN pip install openai=="0.27.8"
 RUN pip install google google.generativeai
+RUN pip install zhipuai
 
 # 设置端口
 EXPOSE ${PORT}

@@ -1,7 +1,6 @@
 import traceback
 
 import flet as ft
-import google.generativeai as genai
 import requests
 
 from widgets.MessageView import MessageView
@@ -86,8 +85,7 @@ def chat_gemini(page: ft.Page):
             page.update()
 
     def clear_history():
-        nonlocal history
-        history = []
+        history.clear()
         message_to_show.controls = [MessageView("S", "SYSTEM", "# 欢迎使用全新的Gemini！", page).get_widget()]
         page.update()
 

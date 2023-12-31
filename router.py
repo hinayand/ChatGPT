@@ -1,5 +1,5 @@
 import flet as ft
-from pages import index, setting, chatgpt, chat_gemini
+from pages import index, setting, chatgpt, chat_gemini, chat_glm
 
 
 def router_func(route_str: str, page: ft.Page):
@@ -13,3 +13,5 @@ def router_func(route_str: str, page: ft.Page):
         page.views.append(chatgpt.chatgpt(page))
     elif route_str.split("/")[1] == "chat-gemini":
         page.views.append(chat_gemini.chat_gemini(page))
+    elif route_str.split("/")[1] == "chat-glm":
+        page.views.append(chat_glm.chat_glm(page))
