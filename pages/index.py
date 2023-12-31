@@ -33,7 +33,7 @@ def index(page: ft.Page):
                 label="ChatGPT",
             ),
             ft.NavigationRailDestination(
-                icon=ft.icons.CHAT_OUTLINED,
+                icon=ft.icons.MODEL_TRAINING_OUTLINED,
                 selected_icon=ft.icons.MODEL_TRAINING,
                 label="更多模型",
             )

@@ -105,8 +105,8 @@ def chat_gemini(page: ft.Page):
         page.dialog = ft.AlertDialog(
             title=ft.Text("设置API Key"),
             content=ft.ListView([
-                ft.TextField(label="API Key", hint_text="API Key"),
-                ft.TextField(label="API URL", hint_text="API URL")
+                ft.TextField(label="API Key", hint_text="API Key", value=page.client_storage.get("google_gemini_key")),
+                ft.TextField(label="API URL", hint_text="API URL", value=page.client_storage.get("google_gemini_url"))
             ], expand=1, spacing=5),
             actions=[
                 ft.TextButton(text="保存", on_click=lambda _: dialog_op("save")),

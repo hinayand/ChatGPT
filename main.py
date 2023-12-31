@@ -8,7 +8,8 @@ from router import router_func
 
 def main(page: ft.Page):
     page.fonts = {
-        "Harmony Sans": "./resource/HarmonyOS_Sans_SC_Regular.ttf"
+        "Harmony Sans": "./resource/HarmonyOS_Sans_SC_Regular.ttf",
+        "Noto Mono": "./resource/NotoSansMonoCJKsc-Regular.otf"
     }
     page.theme = ft.Theme(use_material3=True, font_family="Harmony Sans")
     if page.client_storage.get("dark_mode"):
