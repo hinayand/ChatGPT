@@ -22,5 +22,6 @@ jobs:
         git remote set-url origin https://$HUGGINGFACE_USERNAME:$HUGGINGFACE_TOKEN@huggingface.co/spaces/$HUGGINGFACE_USERNAME/$HUGGINGFACE_REPO_NAME
     - name: Push to Huggingface
       run: |
-        git pull origin -f
+        git config pull.rebase true
+        git pull origin
         git push --all
