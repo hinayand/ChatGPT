@@ -1,0 +1,23 @@
+name: Push to Huggingface
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push_to_huggingface:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Out Repo
+      uses: actions/checkout@v2
+
+    - name: Set Remote URL
+      run: |
+        git remote set-url origin https://$HUGGINGFACE_USERNAME:$HUGGINGFACE_TOKEN@huggingface.co/$HUGGINGFACE_USERNAME/$HUGGINGFACE_REPO_NAME
+
+    - name: Push to Huggingface
+      run: |
+        git pull origin
+        git push --all
