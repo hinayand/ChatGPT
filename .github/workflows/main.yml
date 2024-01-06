@@ -14,21 +14,12 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set Remote URL
-      uses: actions/github-script@v4
-      with:
-        script: |
-          github.actions.getEnvironment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            environment_name: 'PushToHF'
-          }).then(env => {
-            core.setSecret('HUGGINGFACE_USERNAME', env.environment.secrets.HUGGINGFACE_USERNAME);
-            core.setSecret('HUGGINGFACE_TOKEN', env.environment.secrets.HUGGINGFACE_TOKEN);
-            core.setSecret('HUGGINGFACE_REPO_NAME', env.environment.secrets.HUGGINGFACE_REPO_NAME);
-            git remote set-url origin https://$HUGGINGFACE_USERNAME:$HUGGINGFACE_TOKEN@huggingface.co/$HUGGINGFACE_USERNAME/$HUGGINGFACE_REPO_NAME
-          })
-      
-
+      env:
+        HUGGINGFACE_USERNAME: ${{ secrets.HUGGINGFACE_USERNAME }}
+        HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+        HUGGINGFACE_REPO_NAME: ${{ secrets.HUGGINGFACE_REPO_NAME }}
+      run: |
+        git remote set-url origin https://$HUGGINGFACE_USERNAME:$HUGGINGFACE_TOKEN@huggingface.co/$HUGGINGFACE_USERNAME/$HUGGINGFACE_REPO_NAME
     - name: Push to Huggingface
       run: |
         git pull origin
