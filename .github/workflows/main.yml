@@ -16,6 +16,7 @@ jobs:
     - name: Install Git LFS
       run: |
         curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+        git lfs install
     - name: Set Remote URL
       env:
         HUGGINGFACE_USERNAME: ${{ secrets.HUGGINGFACE_USERNAME }}
