@@ -22,4 +22,4 @@ jobs:
         git remote set-url origin https://$HUGGINGFACE_USERNAME:$HUGGINGFACE_TOKEN@huggingface.co/spaces/$HUGGINGFACE_USERNAME/$HUGGINGFACE_REPO_NAME
     - name: Push to Huggingface
       run: |
-        git push --force
+        git push --force-with-lease
