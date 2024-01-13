@@ -13,6 +13,9 @@ jobs:
     - name: Check Out Repo
       uses: actions/checkout@v2
 
+    - name: Install Git LFS
+      run: |
+        curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
     - name: Set Remote URL
       env:
         HUGGINGFACE_USERNAME: ${{ secrets.HUGGINGFACE_USERNAME }}
