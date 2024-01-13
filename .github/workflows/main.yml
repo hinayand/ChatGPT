@@ -1,0 +1,25 @@
+name: Push to Huggingface
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push_to_huggingface:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Out Repo
+      uses: actions/checkout@v2
+
+    - name: Set Remote URL
+      env:
+        HUGGINGFACE_USERNAME: ${{ secrets.HUGGINGFACE_USERNAME }}
+        HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+        HUGGINGFACE_REPO_NAME: ${{ secrets.HUGGINGFACE_REPO_NAME }}
+      run: |
+        git remote set-url origin https://$HUGGINGFACE_USERNAME:$HUGGINGFACE_TOKEN@huggingface.co/spaces/$HUGGINGFACE_USERNAME/$HUGGINGFACE_REPO_NAME
+    - name: Push to Huggingface
+      run: |
+        git push --force

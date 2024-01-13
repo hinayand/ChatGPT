@@ -1,0 +1,10 @@
+__pycache__
+.vscode
+.idea
+dist
+build
+*.sh
+*.cmd
+*.pyc
+*.spec
+*.ico
