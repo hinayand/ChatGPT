@@ -81,7 +81,7 @@ def chatgpt(page: ft.Page):
                     # 弹出对话框提示无法获取API模型信息
                     page.dialog = ft.AlertDialog(
                         title=ft.Text("我们无法获取你的API模型信息！"),
-                        content=ft.Text(traceback.format_exc()),
+                        content=ft.ListView([ft.Text(traceback.format_exc())]),
                         actions=[ft.TextButton("好的", on_click=lambda _: close_dialog())]
                     )
                     page.dialog.open = True  # 打开对话框
