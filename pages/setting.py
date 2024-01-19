@@ -31,8 +31,8 @@ def setting(page: ft.Page) -> ft.View:
                             on_click=lambda _: theme_color_change("yellow")),
                 ft.ListTile(title=ft.Text("绿色"), leading=ft.CircleAvatar(bgcolor="green"),
                             on_click=lambda _: theme_color_change("green")),
-                ft.ListTile(title=ft.Text("粉色"), leading=ft.CircleAvatar(bgcolor="green"),
-                            on_click=lambda _: theme_color_change("pink"))
+                ft.ListTile(title=ft.Text("粉色"), leading=ft.CircleAvatar(bgcolor="pink"),
+                            on_click=lambda _: theme_color_change("pink")),
                 custom_theme_color_input
             ], spacing=0, expand=1)
             , margin=10
