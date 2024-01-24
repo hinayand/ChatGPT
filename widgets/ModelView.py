@@ -17,10 +17,10 @@ class ModelView(ft.UserControl):
                 ft.Column([
                     ft.Row([
                         ft.CircleAvatar(content=ft.Text(self.model_name[0]), tooltip=self.model_name),
-                        ft.Text(self.model_name, style=ft.TextThemeStyle.TITLE_LARGE, expand=1)
+                        ft.Text(self.model_name, theme_style=ft.TextThemeStyle.TITLE_LARGE, expand=1)
                     ]),
                     ft.Row([
-                        ft.Text(self.model_description, style=ft.TextThemeStyle.BODY_LARGE, expand=1)
+                        ft.Text(self.model_description, theme_style=ft.TextThemeStyle.BODY_LARGE, expand=1)
                     ]),
                     ft.Row([
                         ft.TextButton(text="前往",

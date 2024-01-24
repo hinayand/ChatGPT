@@ -20,7 +20,7 @@ def setting(page: ft.Page) -> ft.View:
     theme_color_picker = ft.Card(
         content=ft.Container(
             content=ft.Column([
-                ft.Text("设置主题色", style=ft.TextThemeStyle.TITLE_MEDIUM),
+                ft.Text("设置主题色", theme_style=ft.TextThemeStyle.TITLE_MEDIUM),
                 ft.ListTile(title=ft.Text("蓝色"), leading=ft.CircleAvatar(bgcolor="blue"),
                             on_click=lambda _: theme_color_change("blue")),
                 ft.ListTile(title=ft.Text("橙色"), leading=ft.CircleAvatar(bgcolor="orange"),
@@ -69,11 +69,11 @@ def setting(page: ft.Page) -> ft.View:
     view = ft.View("/setting", [
         # ft.AppBar(title=ft.Text("设置")),
         ft.ListView([
-            ft.Text("界面设置", style=ft.TextThemeStyle.BODY_LARGE),
+            ft.Text("界面设置", theme_style=ft.TextThemeStyle.BODY_LARGE),
             material3_switch,
             dark_mode_switch,
             theme_color_picker,
-            ft.Text("ChatGPT设置", style=ft.TextThemeStyle.BODY_LARGE),
+            ft.Text("ChatGPT设置", theme_style=ft.TextThemeStyle.BODY_LARGE),
             openai_api_host,
             openai_api_key,
             ft.TextButton(icon=ft.icons.REMOVE, text="重置ChatGPT设置", on_click=lambda _: reset_openai_set())
@@ -108,9 +108,9 @@ def setting(page: ft.Page) -> ft.View:
         page.client_storage.set("openai_api_key", openai_api_key.value)
 
     def about():
-        dlg = ft.AlertDialog(title=ft.Text("关于", style=ft.TextThemeStyle.TITLE_LARGE),
+        dlg = ft.AlertDialog(title=ft.Text("关于", theme_style=ft.TextThemeStyle.TITLE_LARGE),
                              content=ft.Text("作者：hinayand",
-                                             style=ft.TextThemeStyle.BODY_LARGE),
+                                             theme_style=ft.TextThemeStyle.BODY_LARGE),
                              actions=[
                                  ft.TextButton("好的", on_click=lambda _: DialogTools.DialogTools(
                                      page).close_dlg(dlg))

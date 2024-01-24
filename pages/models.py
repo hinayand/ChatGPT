@@ -14,7 +14,7 @@ def models(page: ft.Page):
                                                   model_page_path=model["model_page_path"],
                                                   current_page=page))
     view = ft.View("/models", [
-        ft.Text("更多模型", style=ft.TextThemeStyle.TITLE_LARGE),
+        ft.Text("更多模型", theme_style=ft.TextThemeStyle.TITLE_LARGE),
         model_list_view
     ])
     return view
