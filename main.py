@@ -2,6 +2,7 @@ import os
 
 import flet as ft
 from flet import ThemeMode
+from pages.index import index
 
 from router import router_func
 
@@ -18,9 +19,12 @@ def main(page: ft.Page):
         page.theme_mode = ThemeMode.LIGHT
 
     def view_pop(view):
-        page.views.pop()
-        top_view = page.views[-1]
-        page.go(top_view.route)
+        try:
+            page.views.pop()
+            top_view = page.views[-1]
+            page.go(top_view.route)
+        except:
+            page.views.append(index(page))
 
     def route_change(route: ft.RouteChangeEvent):
         # TODO: Add Route Change Function

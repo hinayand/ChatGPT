@@ -8,10 +8,7 @@ WORKDIR /app
 ADD . /app
 
 # 安装项目需要的库
-RUN pip install flet
-RUN pip install openai=="0.27.8"
-RUN pip install google google.generativeai
-RUN pip install zhipuai
+RUN pip install -r requirement.txt
 
 # 设置端口
 EXPOSE ${PORT}
